@@ -10,77 +10,160 @@ namespace GemPuzzleGame.Puzzle
         private int _lastMovement;
         private int _nonVisiblePosition;
         private int[] _values;
-        private int _heuristic;
+        private int _heuristic2;
+        private int _cost;
         private int[] _validMovementsPositions;
-        private ChildState[] _children;
 
         public int LastMovement { get { return this._lastMovement; } set { this._lastMovement = value; } }
         public int NonVisiblePosition { get { return this._nonVisiblePosition; } set { this._nonVisiblePosition = value; } }
         public int[] Values { get { return this._values; } set { this._values = value; } }
-        public int Heuristic { get { return this._heuristic; } set { this._heuristic = value; } }
+        public int Heuristic2 { get { return this._heuristic2; } set { this._heuristic2 = value; } }
+        public int Cost { get { return this._cost; } set { this._cost = value; } }
         public int[] ValidMovements { get { return this._validMovementsPositions; } set { this._validMovementsPositions = value; } }
-        public ChildState[] Children { get { return this._children; } set { this._children = value; } }
 
-        public PuzzleState(int[] values, int nextMovementPos, int nonVisiblePos)
+        public PuzzleState(int[] values)
         {
-            this.LastMovement = nonVisiblePos;
-            this.NonVisiblePosition = nextMovementPos;
+            this.NonVisiblePosition = Constants.MinimumValue;
+            this.Values = new int[values.Length];
             values.CopyTo(this.Values, 0);
-            this.Values[nonVisiblePos] = this.Values[nextMovementPos];
-            this.Values[nextMovementPos] = Constants.InvisibleValue;
-
+            while (values[this.NonVisiblePosition] != Constants.InvisibleValue)
+            {
+                this.NonVisiblePosition++;
+            }
+            this.LastMovement = -1;
+            this.Heuristic2 = getHeuristic2();
+            this.Cost = 0;
+            this.setValidMovements();
         }
-    }
 
-    internal class ChildState
-    {
-        private int _heuristic;
-        public int Heuristic { get { return this._heuristic; } set { this._heuristic = value; } }
-
-        ChildState(int[] values, int nextMovement, int nonVisiblePos)
+        public PuzzleState(PuzzleState state)
         {
-            Point currentValue;
-            Point expectedValue;
-            int[] tmpValues = new int[values.Length];
-            this.Heuristic = 0;
-            values.CopyTo(tmpValues, 0);
+            this.NonVisiblePosition = state.NonVisiblePosition;
+            this.Values = new int[state.Values.Length];
+            state.Values.CopyTo(this.Values, 0);
+            this.LastMovement = state.LastMovement;
+            this.Heuristic2 = state.Heuristic2;
+            this.Cost = state.Cost;
+            this.ValidMovements = new int[state.ValidMovements.Length];
+            state.ValidMovements.CopyTo(this.ValidMovements, 0);
+        }
+
+        public PuzzleState(PuzzleState state, int nextMovePosition)
+        {
+            int nonVisiblePos = Constants.MinimumValue;
+
+            state.Values.CopyTo(this.Values, 0);
+            while (state.Values[nonVisiblePos] != Constants.InvisibleValue)
+            {
+                nonVisiblePos++;
+            }
+            this.LastMovement = nonVisiblePos;
+            this.NonVisiblePosition = nextMovePosition;
+            this.Values[nonVisiblePos] = this.Values[nextMovePosition];
+            this.Values[nextMovePosition] = Constants.InvisibleValue;
+            this.Heuristic2 = getHeuristic2(); 
+            this.Cost = state.Cost + 1;
+            this.setValidMovements();
+        }
+
+        public PuzzleState(int[] values, int nextMovePosition, int cost)
+        {
+            int nonVisiblePos = Constants.MinimumValue;
+
+            values.CopyTo(this.Values, 0);
+            while (values[nonVisiblePos] != Constants.InvisibleValue)
+            {
+                nonVisiblePos++;
+            }
+            this.LastMovement = nonVisiblePos;
+            this.NonVisiblePosition = nextMovePosition;
+            this.Values[nonVisiblePos] = this.Values[nextMovePosition];
+            this.Values[nextMovePosition] = Constants.InvisibleValue;
+            this.Heuristic2 = getHeuristic2(); 
+            this.Cost = cost + 1;
+            this.setValidMovements();
+        }
+
+        private void setValidMovements()
+        {
+            int[] tmpValidMovements = new int[4];
+            int validMovements = 0;
+
+            // Up
+            if ((this.NonVisiblePosition - 3) >= Constants.MinimumValue)
+            {
+                if ((this.NonVisiblePosition - 3) != this.LastMovement)
+                {
+                    tmpValidMovements[validMovements] = this.NonVisiblePosition - 3;
+                    validMovements++;
+                }
+            }
+            // Down
+            if ((this.NonVisiblePosition + 3) < Constants.InvisibleValue)
+            {
+                if ((this.NonVisiblePosition + 3) != this.LastMovement)
+                {
+                    tmpValidMovements[validMovements] = this.NonVisiblePosition + 3;
+                    validMovements++;
+                }
+            }
+            // Left
+            if ((this.NonVisiblePosition % 3) != 0)
+            {
+                if ((this.NonVisiblePosition - 1) != this.LastMovement)
+                {
+                    tmpValidMovements[validMovements] = this.NonVisiblePosition - 1;
+                    validMovements++;
+                }
+            }
+            // Right
+            if ((this.NonVisiblePosition % 3) != 2)
+            {
+                if ((this.NonVisiblePosition + 1) != this.LastMovement)
+                {
+                    tmpValidMovements[validMovements] = this.NonVisiblePosition + 1;
+                    validMovements++;
+                }
+            }
+
+            this.ValidMovements = new int[validMovements];
+            for (int i = 0; i < validMovements; i++)
+            {
+                this.ValidMovements[i] = tmpValidMovements[i];
+            }
+        }
+
+        private int getHeuristic2()
+        {
+            Tile currentValue;
+            Tile expectedValue;
+            int heuristic2;
+
+            heuristic2 = 0;
             for (int i = Constants.MinimumValue; i < Constants.InvisibleValue; i++)
             {
-                currentValue = Point.getPoint(values[i]);
-                expectedValue = Point.getPoint(i);
-                this.Heuristic += Point.getCost(currentValue, expectedValue);
+                currentValue = new Tile(this.Values[i]);
+                expectedValue = new Tile(i + 1);
+                heuristic2 += Tile.getCost(currentValue, expectedValue);
             }
+            return heuristic2;
         }
     }
 
-    internal class Point
+    internal class Tile
     {
-        private int x;
-        private int y;
-        public int X { get { return this.x; } set { this.x = value; } }
-        public int Y { get { return this.y; } set { this.y = value; } }
+        internal int X;
+        internal int Y;
 
-        private Point(int position)
+        public Tile(int position)
         {
-            this.X = position / 3;
-            this.Y = position % 3;
+            this.X = (position - 1) / 3;
+            this.Y = (position - 1) % 3;
         }
 
-        public static Point getPoint(int position)
+        public static int getCost(Tile tile1, Tile tile2)
         {
-            Point tmpPoint = null;
-            if ((position > Constants.InvalidValue) && (position < Constants.InvisibleValue))
-            {
-                tmpPoint = new Point(position);
-            }
-            return tmpPoint;
-        }
-
-        public static int getCost(Point current, Point expected)
-        {
-            int cost = 0;
-            cost = Math.Abs(current.X - expected.X) + Math.Abs(current.Y - expected.Y);
-            return cost;
+            return Math.Abs(tile1.X - tile2.X) + Math.Abs(tile1.Y - tile2.Y);
         }
     }
 }

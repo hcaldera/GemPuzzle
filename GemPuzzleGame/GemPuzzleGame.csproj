@@ -47,11 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Puzzle\PuzzleState.cs" />
-    <Compile Include="Screens\GemPuzzle.cs">
+    <Compile Include="Puzzle\Solver.cs" />
+    <Compile Include="Screens\GemPuzzleForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Screens\GemPuzzle.Designer.cs">
-      <DependentUpon>GemPuzzle.cs</DependentUpon>
+    <Compile Include="Screens\GemPuzzleForm.Designer.cs">
+      <DependentUpon>GemPuzzleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -65,9 +66,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Screens\GemPuzzle.resx">
-      <DependentUpon>GemPuzzle.cs</DependentUpon>
+    <EmbeddedResource Include="Screens\GemPuzzleForm.resx">
+      <DependentUpon>GemPuzzleForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="docs\tests.xlsx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

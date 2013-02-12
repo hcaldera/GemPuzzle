@@ -15,7 +15,7 @@ namespace GemPuzzleGame
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(GemPuzzle.getInstance());
+            Application.Run(GemPuzzleForm.getInstance());
         }
     }
 

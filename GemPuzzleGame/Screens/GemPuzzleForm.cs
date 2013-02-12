@@ -6,37 +6,35 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using GemPuzzleGame.Puzzle;
 
 namespace GemPuzzleGame
 {
-    public partial class GemPuzzle : Form
+    public partial class GemPuzzleForm : Form
     {
-        private static GemPuzzle _instance;
+        private static GemPuzzleForm _instance;
         public GemButton[] gemButtons;
 
-        public GemPuzzle()
+        public GemPuzzleForm()
         {
             InitializeComponent();
-            this.gemButton0.Click += new System.EventHandler(this.gemButton_Click);
-            this.gemButton1.Click += new System.EventHandler(this.gemButton_Click);
-            this.gemButton2.Click += new System.EventHandler(this.gemButton_Click);
-            this.gemButton3.Click += new System.EventHandler(this.gemButton_Click);
-            this.gemButton4.Click += new System.EventHandler(this.gemButton_Click);
-            this.gemButton5.Click += new System.EventHandler(this.gemButton_Click);
-            this.gemButton6.Click += new System.EventHandler(this.gemButton_Click);
-            this.gemButton7.Click += new System.EventHandler(this.gemButton_Click);
-            this.gemButton8.Click += new System.EventHandler(this.gemButton_Click);
             GemButton[] tmpGemButtons = { this.gemButton0, this.gemButton1, this.gemButton2, this.gemButton3, this.gemButton4, this.gemButton5, this.gemButton6, this.gemButton7, this.gemButton8 };
             this.gemButtons = tmpGemButtons;
+            for (int i = Constants.MinimumValue; i < Constants.InvisibleValue; i++)
+            {
+                this.gemButtons[i].Click += new System.EventHandler(this.gemButton_Click);
+                this.gemButtons[i].ArrayPosition = i;
+                this.gemButtons[i].Value = Solver.StartNode.Values[i];
+            }
         }
 
-        public static GemPuzzle getInstance()
+        public static GemPuzzleForm getInstance()
         {
-            if (null == GemPuzzle._instance)
+            if (null == GemPuzzleForm._instance)
             {
-                GemPuzzle._instance = new GemPuzzle();
+                GemPuzzleForm._instance = new GemPuzzleForm();
             }
-            return GemPuzzle._instance;
+            return GemPuzzleForm._instance;
         }
 
         private void gemButton_Click(object sender, EventArgs e)
@@ -77,13 +75,17 @@ namespace GemPuzzleGame
 
         private void tsbResolve_Click(object sender, EventArgs e)
         {
-
+            int[] currentArray = new int[Constants.InvisibleValue];
+            for (int i = Constants.MinimumValue; i < Constants.InvisibleValue; i++)
+            {
+                currentArray[i] = this.gemButtons[i].Value;
+            }
+            Solver.CurrentNode = new PuzzleState(currentArray);
         }
 
         private void tsbShuffle_Click(object sender, EventArgs e)
         {
 
         }
-
     }
 }
