@@ -14,6 +14,7 @@ namespace GemPuzzleGame
     {
         private static GemPuzzleForm _instance;
         public GemButton[] gemButtons;
+        public bool BackForwardButtons { set { this.tsbBack.Enabled = value; this.tsbForward.Enabled = value; } }
 
         public GemPuzzleForm()
         {
@@ -42,50 +43,64 @@ namespace GemPuzzleGame
             GemButton clickedGemButton = sender as GemButton;
             int pos = clickedGemButton.ArrayPosition;
             bool moveUp, moveDown, moveLeft, moveRight;
-            moveUp = ((pos - 3) > -1) && (Constants.InvisibleValue == this.gemButtons[pos - 3].Value);
-            moveDown = ((pos + 3) < 9) && (Constants.InvisibleValue == this.gemButtons[pos + 3].Value);
-            moveLeft = ((pos % 3) > 0) && (Constants.InvisibleValue == this.gemButtons[pos - 1].Value);
-            moveRight = ((pos % 3) < 2) && (Constants.InvisibleValue == this.gemButtons[pos + 1].Value);
+            if (Actions.None == Solver.Action)
+            {
+                moveUp = ((pos - 3) > -1) && (Constants.InvisibleValue == this.gemButtons[pos - 3].Value);
+                moveDown = ((pos + 3) < 9) && (Constants.InvisibleValue == this.gemButtons[pos + 3].Value);
+                moveLeft = ((pos % 3) > 0) && (Constants.InvisibleValue == this.gemButtons[pos - 1].Value);
+                moveRight = ((pos % 3) < 2) && (Constants.InvisibleValue == this.gemButtons[pos + 1].Value);
 
-            if (moveUp)
-            {
-                this.gemButtons[pos - 3].Value = clickedGemButton.Value;
-                clickedGemButton.Value = Constants.InvisibleValue;
-                this.gemButtons[pos - 3].Focus();
-            }
-            else if (moveDown)
-            {
-                this.gemButtons[pos + 3].Value = clickedGemButton.Value;
-                clickedGemButton.Value = Constants.InvisibleValue;
-                this.gemButtons[pos + 3].Focus();
-            }
-            else if (moveLeft)
-            {
-                this.gemButtons[pos - 1].Value = clickedGemButton.Value;
-                clickedGemButton.Value = Constants.InvisibleValue;
-                this.gemButtons[pos - 1].Focus();
-            }
-            else if (moveRight)
-            {
-                this.gemButtons[pos + 1].Value = clickedGemButton.Value;
-                clickedGemButton.Value = Constants.InvisibleValue;
-                this.gemButtons[pos + 1].Focus();
+                if (moveUp)
+                {
+                    this.gemButtons[pos - 3].Value = clickedGemButton.Value;
+                    clickedGemButton.Value = Constants.InvisibleValue;
+                    this.gemButtons[pos - 3].Focus();
+                }
+                else if (moveDown)
+                {
+                    this.gemButtons[pos + 3].Value = clickedGemButton.Value;
+                    clickedGemButton.Value = Constants.InvisibleValue;
+                    this.gemButtons[pos + 3].Focus();
+                }
+                else if (moveLeft)
+                {
+                    this.gemButtons[pos - 1].Value = clickedGemButton.Value;
+                    clickedGemButton.Value = Constants.InvisibleValue;
+                    this.gemButtons[pos - 1].Focus();
+                }
+                else if (moveRight)
+                {
+                    this.gemButtons[pos + 1].Value = clickedGemButton.Value;
+                    clickedGemButton.Value = Constants.InvisibleValue;
+                    this.gemButtons[pos + 1].Focus();
+                }
             }
         }
 
         private void tsbResolve_Click(object sender, EventArgs e)
         {
-            int[] currentArray = new int[Constants.InvisibleValue];
-            for (int i = Constants.MinimumValue; i < Constants.InvisibleValue; i++)
+            if (Actions.None == Solver.Action)
             {
-                currentArray[i] = this.gemButtons[i].Value;
+                this.BackForwardButtons = false;
+                Solver.Action = Actions.Solving;
             }
-            Solver.CurrentNode = new PuzzleState(currentArray);
         }
 
         private void tsbShuffle_Click(object sender, EventArgs e)
         {
+            int[] currentArray = new int[Constants.InvisibleValue];
+            if (Actions.None == Solver.Action)
+            {
+                Solver.Action = Actions.Shuffling;
+            }
+        }
 
+        private void GemPuzzleForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Actions.None != Solver.Action)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

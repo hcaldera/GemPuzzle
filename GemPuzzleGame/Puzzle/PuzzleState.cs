@@ -66,10 +66,10 @@ namespace GemPuzzleGame.Puzzle
             this.setValidMovements();
         }
 
-        public PuzzleState(int[] values, int nextMovePosition, int cost)
+        private PuzzleState(int[] values, int nextMovePosition)
         {
             int nonVisiblePos = Constants.MinimumValue;
-
+            this.Values = new int[Constants.InvisibleValue];
             values.CopyTo(this.Values, 0);
             while (values[nonVisiblePos] != Constants.InvisibleValue)
             {
@@ -80,8 +80,17 @@ namespace GemPuzzleGame.Puzzle
             this.Values[nonVisiblePos] = this.Values[nextMovePosition];
             this.Values[nextMovePosition] = Constants.InvisibleValue;
             this.Heuristic2 = getHeuristic2(); 
-            this.Cost = cost + 1;
+            this.Cost = 0;
             this.setValidMovements();
+        }
+
+        public static PuzzleState setNextStateRandomly(PuzzleState state)
+        {
+            PuzzleState tmpState;
+            Random nextMove = new Random(DateTime.Now.Millisecond);
+            int index = nextMove.Next(0, state.ValidMovements.Length);
+            tmpState = new PuzzleState(state.Values, state.ValidMovements[index]);
+            return tmpState;
         }
 
         private void setValidMovements()
@@ -142,9 +151,12 @@ namespace GemPuzzleGame.Puzzle
             heuristic2 = 0;
             for (int i = Constants.MinimumValue; i < Constants.InvisibleValue; i++)
             {
-                currentValue = new Tile(this.Values[i]);
-                expectedValue = new Tile(i + 1);
-                heuristic2 += Tile.getCost(currentValue, expectedValue);
+                if (this.Values[i] < Constants.InvisibleValue)
+                {
+                    currentValue = new Tile(this.Values[i]);
+                    expectedValue = new Tile(i + 1);
+                    heuristic2 += Tile.getCost(currentValue, expectedValue);
+                }
             }
             return heuristic2;
         }
