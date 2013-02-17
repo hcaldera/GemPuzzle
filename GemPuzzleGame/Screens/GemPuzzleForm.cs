@@ -179,5 +179,10 @@ namespace GemPuzzleGame
                 Solver.Action = Actions.GoToEnd;
             }
         }
+
+        private void GemPuzzleForm_Load(object sender, EventArgs e)
+        {
+            this.Text += " v" + this.ProductVersion;
+        }
     }
 }

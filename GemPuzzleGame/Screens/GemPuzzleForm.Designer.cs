@@ -348,6 +348,7 @@
             this.Name = "GemPuzzleForm";
             this.Text = "Gem Puzzle";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GemPuzzleForm_FormClosing);
+            this.Load += new System.EventHandler(this.GemPuzzleForm_Load);
             this.tsGemPuzzle.ResumeLayout(false);
             this.tsGemPuzzle.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
