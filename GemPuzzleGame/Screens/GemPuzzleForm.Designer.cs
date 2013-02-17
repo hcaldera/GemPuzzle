@@ -32,9 +32,16 @@
             this.tsGemPuzzle = new System.Windows.Forms.ToolStrip();
             this.tsbResolve = new System.Windows.Forms.ToolStripButton();
             this.tsbShuffle = new System.Windows.Forms.ToolStripButton();
-            this.tsbBack = new System.Windows.Forms.ToolStripButton();
-            this.tsbForward = new System.Windows.Forms.ToolStripButton();
+            this.tsbStart = new System.Windows.Forms.ToolStripButton();
+            this.tsbBackward = new System.Windows.Forms.ToolStripButton();
+            this.tsbPlay = new System.Windows.Forms.ToolStripButton();
+            this.tsbStop = new System.Windows.Forms.ToolStripButton();
             this.tslMessage = new System.Windows.Forms.ToolStripLabel();
+            this.tsbForward = new System.Windows.Forms.ToolStripButton();
+            this.tsbEnd = new System.Windows.Forms.ToolStripButton();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.sslNodes = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sslMoves = new System.Windows.Forms.ToolStripStatusLabel();
             this.gemButton8 = new GemPuzzleGame.GemButton();
             this.gemButton7 = new GemPuzzleGame.GemButton();
             this.gemButton6 = new GemPuzzleGame.GemButton();
@@ -45,6 +52,7 @@
             this.gemButton1 = new GemPuzzleGame.GemButton();
             this.gemButton0 = new GemPuzzleGame.GemButton();
             this.tsGemPuzzle.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tsGemPuzzle
@@ -53,9 +61,13 @@
             this.tsGemPuzzle.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsbResolve,
             this.tsbShuffle,
-            this.tsbBack,
+            this.tsbStart,
+            this.tsbBackward,
+            this.tsbPlay,
+            this.tsbStop,
+            this.tslMessage,
             this.tsbForward,
-            this.tslMessage});
+            this.tsbEnd});
             this.tsGemPuzzle.Location = new System.Drawing.Point(0, 0);
             this.tsGemPuzzle.Name = "tsGemPuzzle";
             this.tsGemPuzzle.Size = new System.Drawing.Size(275, 25);
@@ -82,15 +94,54 @@
             this.tsbShuffle.Text = "Shuffle";
             this.tsbShuffle.Click += new System.EventHandler(this.tsbShuffle_Click);
             // 
-            // tsbBack
+            // tsbStart
             // 
-            this.tsbBack.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.tsbBack.Enabled = false;
-            this.tsbBack.Image = ((System.Drawing.Image)(resources.GetObject("tsbBack.Image")));
-            this.tsbBack.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbBack.Name = "tsbBack";
-            this.tsbBack.Size = new System.Drawing.Size(23, 22);
-            this.tsbBack.Text = "toolStripButton1";
+            this.tsbStart.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbStart.Enabled = false;
+            this.tsbStart.Image = ((System.Drawing.Image)(resources.GetObject("tsbStart.Image")));
+            this.tsbStart.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbStart.Name = "tsbStart";
+            this.tsbStart.Size = new System.Drawing.Size(23, 22);
+            this.tsbStart.Text = "Start";
+            this.tsbStart.Click += new System.EventHandler(this.tsbStart_Click);
+            // 
+            // tsbBackward
+            // 
+            this.tsbBackward.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbBackward.Enabled = false;
+            this.tsbBackward.Image = ((System.Drawing.Image)(resources.GetObject("tsbBackward.Image")));
+            this.tsbBackward.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbBackward.Name = "tsbBackward";
+            this.tsbBackward.Size = new System.Drawing.Size(23, 22);
+            this.tsbBackward.Text = "Backward";
+            this.tsbBackward.Click += new System.EventHandler(this.tsbBackward_Click);
+            // 
+            // tsbPlay
+            // 
+            this.tsbPlay.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbPlay.Enabled = false;
+            this.tsbPlay.Image = ((System.Drawing.Image)(resources.GetObject("tsbPlay.Image")));
+            this.tsbPlay.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbPlay.Name = "tsbPlay";
+            this.tsbPlay.Size = new System.Drawing.Size(23, 22);
+            this.tsbPlay.Text = "Play";
+            this.tsbPlay.Click += new System.EventHandler(this.tsbPlay_Click);
+            // 
+            // tsbStop
+            // 
+            this.tsbStop.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbStop.Enabled = false;
+            this.tsbStop.Image = ((System.Drawing.Image)(resources.GetObject("tsbStop.Image")));
+            this.tsbStop.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbStop.Name = "tsbStop";
+            this.tsbStop.Size = new System.Drawing.Size(23, 22);
+            this.tsbStop.Text = "Stop";
+            this.tsbStop.Click += new System.EventHandler(this.tsbStop_Click);
+            // 
+            // tslMessage
+            // 
+            this.tslMessage.Name = "tslMessage";
+            this.tslMessage.Size = new System.Drawing.Size(0, 22);
             // 
             // tsbForward
             // 
@@ -100,12 +151,43 @@
             this.tsbForward.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbForward.Name = "tsbForward";
             this.tsbForward.Size = new System.Drawing.Size(23, 22);
-            this.tsbForward.Text = "toolStripButton2";
+            this.tsbForward.Text = "Forward";
+            this.tsbForward.Click += new System.EventHandler(this.tsbForward_Click);
             // 
-            // tslMessage
+            // tsbEnd
             // 
-            this.tslMessage.Name = "tslMessage";
-            this.tslMessage.Size = new System.Drawing.Size(0, 22);
+            this.tsbEnd.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbEnd.Enabled = false;
+            this.tsbEnd.Image = ((System.Drawing.Image)(resources.GetObject("tsbEnd.Image")));
+            this.tsbEnd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbEnd.Name = "tsbEnd";
+            this.tsbEnd.Size = new System.Drawing.Size(23, 22);
+            this.tsbEnd.Text = "End";
+            this.tsbEnd.Click += new System.EventHandler(this.tsbEnd_Click);
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sslNodes,
+            this.sslMoves});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 292);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.statusStrip1.Size = new System.Drawing.Size(275, 22);
+            this.statusStrip1.TabIndex = 9;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // sslNodes
+            // 
+            this.sslNodes.BackColor = System.Drawing.SystemColors.Control;
+            this.sslNodes.Name = "sslNodes";
+            this.sslNodes.Size = new System.Drawing.Size(0, 0);
+            // 
+            // sslMoves
+            // 
+            this.sslMoves.BackColor = System.Drawing.SystemColors.Control;
+            this.sslMoves.Name = "sslMoves";
+            this.sslMoves.Size = new System.Drawing.Size(0, 17);
             // 
             // gemButton8
             // 
@@ -247,7 +329,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Maroon;
-            this.ClientSize = new System.Drawing.Size(275, 296);
+            this.ClientSize = new System.Drawing.Size(275, 314);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tsGemPuzzle);
             this.Controls.Add(this.gemButton8);
             this.Controls.Add(this.gemButton7);
@@ -267,6 +350,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GemPuzzleForm_FormClosing);
             this.tsGemPuzzle.ResumeLayout(false);
             this.tsGemPuzzle.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -286,9 +371,16 @@
         private System.Windows.Forms.ToolStrip tsGemPuzzle;
         private System.Windows.Forms.ToolStripButton tsbResolve;
         private System.Windows.Forms.ToolStripButton tsbShuffle;
-        private System.Windows.Forms.ToolStripButton tsbBack;
+        private System.Windows.Forms.ToolStripButton tsbStart;
+        private System.Windows.Forms.ToolStripButton tsbStop;
+        private System.Windows.Forms.ToolStripLabel tslMessage;
+        private System.Windows.Forms.ToolStripButton tsbBackward;
+        private System.Windows.Forms.ToolStripButton tsbPlay;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel sslNodes;
+        private System.Windows.Forms.ToolStripStatusLabel sslMoves;
         private System.Windows.Forms.ToolStripButton tsbForward;
-        private System.Windows.Forms.ToolStripLabel tslMessage;        
+        private System.Windows.Forms.ToolStripButton tsbEnd;        
     }
 
     public class GemButton : System.Windows.Forms.Button
