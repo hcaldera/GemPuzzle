@@ -19,7 +19,7 @@ namespace GemPuzzleGame.Puzzle
         private static Actions _action;
         private static byte[] _solutionMoves;
         private static byte _position;
-        private static int[] _goalArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+        private static int[] _goalArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9 /* 9, 7, 8, 4, 5, 6, 3, 2, 1 */};
 
         public static PuzzleState StartNode { get { return Solver._startNode; } set { Solver._startNode = value; } }
         public static PuzzleState CurrentNode { get { return Solver._currentNode; } set { Solver._currentNode = value; } }
@@ -33,7 +33,7 @@ namespace GemPuzzleGame.Puzzle
 
         static Solver()
         {
-            int[] startArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            int[] startArray = { 1, 2, 3, 4, 5, 6, 7, 8, 9 /* 9, 7, 8, 4, 5, 6, 3, 2, 1 */};
             Solver.StartNode = new PuzzleState(startArray);
             Solver.GoalNode = new PuzzleState(Solver.GoalArray);
             Solver.CurrentNode = new PuzzleState(Solver.StartNode);
@@ -224,7 +224,6 @@ namespace GemPuzzleGame.Puzzle
         {
             GemPuzzleForm oGemPuzzleForm = GemPuzzleForm.getInstance();
             PuzzleState currentState;
-            //PuzzleState nextState;
             int[] tmpValues = new int[Constants.InvisibleValue];
             oGemPuzzleForm.Invoke(new System.Windows.Forms.MethodInvoker(() =>
             {

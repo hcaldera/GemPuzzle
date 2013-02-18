@@ -106,7 +106,9 @@ namespace GemPuzzleGame.Puzzle
         public int GetFofN()
         {
             // f(n) = h(n) + g(n)
-            return this.Heuristic2 + this.Cost;
+            //return this.Heuristic1 + this.Cost; // h(n) = h1
+            return this.Heuristic2 + this.Cost; // h(n) = h2
+            //return this.Heuristic1 + this.Heuristic2 + this.Cost; // h(n) = h1 + h2
         }
 
         public bool IsEqualTo(PuzzleState state)
@@ -180,7 +182,7 @@ namespace GemPuzzleGame.Puzzle
             int heuristic1 = 0;
             for (int i = 0; i < Constants.InvisibleValue; i++)
             {
-                if ((this.Values[i] != Constants.InvisibleValue) && ((this.Values[i] - 1) != i))
+                if ((this.Values[i] != Constants.InvisibleValue) && (this.Values[i] != Solver.GoalArray[i]))
                 {
                     heuristic1++;
                 }
@@ -200,7 +202,7 @@ namespace GemPuzzleGame.Puzzle
                 if (this.Values[i] < Constants.InvisibleValue)
                 {
                     currentValue = new Tile(this.Values[i]);
-                    expectedValue = new Tile(i + 1);
+                    expectedValue = new Tile(Solver.GoalArray[i]);
                     heuristic2 += Tile.getCost(currentValue, expectedValue);
                 }
             }
