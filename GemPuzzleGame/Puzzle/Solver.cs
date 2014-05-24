@@ -166,10 +166,10 @@ namespace GemPuzzleGame.Puzzle
                 else
                 {
                     // 7. Generate each state that can come after CurrentNode.
-                    successorNodes = new List<PuzzleState>(Solver.CurrentNode.ValidMovements.Length);
-                    for (int i = 0; i < Solver.CurrentNode.ValidMovements.Length; i++)
+                    successorNodes = new List<PuzzleState>(Solver.CurrentNode.ValidMoves.Length);
+                    for (int i = 0; i < Solver.CurrentNode.ValidMoves.Length; i++)
                     {
-                        successorNodes.Add(new PuzzleState(Solver.CurrentNode, Solver.CurrentNode.ValidMovements[i]));
+                        successorNodes.Add(new PuzzleState(Solver.CurrentNode, Solver.CurrentNode.ValidMoves[i]));
                     }
 
                     foreach (PuzzleState state in successorNodes)
